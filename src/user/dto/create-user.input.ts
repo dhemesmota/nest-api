@@ -10,4 +10,8 @@ export class CreateUserInput {
   @IsEmail({}, { message: 'O e-mail é inválido' })
   @IsNotEmpty({ message: 'O e-mail não pode estar vazio' })
   email: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'A senha é obrigatória.' })
+  password: string;
 }
