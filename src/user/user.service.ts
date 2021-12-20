@@ -22,7 +22,7 @@ export class UserService {
     return users;
   }
 
-  async findUserById(id: string): Promise<User> {
+  async findUserById(id: number): Promise<User> {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {
@@ -53,7 +53,7 @@ export class UserService {
     return userSaved;
   }
 
-  async updateUser(id: string, data: UpdateUserInput): Promise<User> {
+  async updateUser(id: number, data: UpdateUserInput): Promise<User> {
     const user = await this.findUserById(id);
 
     await this.userRepository.update(user, { ...data });
@@ -63,7 +63,7 @@ export class UserService {
     return userUpdated;
   }
 
-  async deleteUser(id: string): Promise<boolean> {
+  async deleteUser(id: number): Promise<boolean> {
     const user = await this.findUserById(id);
 
     const deleted = await this.userRepository.delete(user);

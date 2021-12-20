@@ -17,13 +17,13 @@ type Query {
   me: User!
   users: [User!]!
   userByEmail(email: String!): User!
-  user(id: String!): User!
+  user(id: Float!): User!
 }
 
 type Mutation {
   createUser(data: CreateUserInput!): User!
-  updateUser(data: UpdateUserInput!, id: String!): User!
-  deleteUser(id: String!): Boolean!
+  updateUser(data: UpdateUserInput!, id: Float!): User!
+  deleteUser(id: Float!): Boolean!
   login(data: AuthInput!): AuthType!
 }
 
@@ -34,7 +34,7 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
-  id: String
+  id: Float
   name: String
   email: String
   password: String

@@ -71,3 +71,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Authorization payload
+Click HTTP Header and add your token as shown below:
+
+```
+  {
+    "Authorization": "Bearer YOUR_TOKEN_HERE"
+  }
+```
+you may have to remove Bearer and only use the token, it depends on how you did authorization
