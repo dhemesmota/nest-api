@@ -81,3 +81,9 @@ Click HTTP Header and add your token as shown below:
   }
 ```
 you may have to remove Bearer and only use the token, it depends on how you did authorization
+
+## CLI
+
+### Generate module
+nest g resource name-module 
+`GraphQL (code first)`

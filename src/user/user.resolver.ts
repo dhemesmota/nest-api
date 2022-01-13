@@ -14,9 +14,10 @@ export class UserResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(() => User)
-  me(@CurrentUser() user: User): Promise<User> {
+  async me(@CurrentUser() user: User): Promise<User> {
     // Retorna o usuário autenticado
-    return this.userService.findUserById(user.id);
+    const findUser = await this.userService.findUserById(user.id);
+    return findUser;
   }
 
   @UseGuards(GqlAuthGuard)

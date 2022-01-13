@@ -13,11 +13,17 @@ type AuthType {
   token: String!
 }
 
+type Profile {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Query {
   me: User!
   users: [User!]!
   userByEmail(email: String!): User!
   user(id: Float!): User!
+  profile(id: Int!): Profile!
 }
 
 type Mutation {
@@ -25,6 +31,9 @@ type Mutation {
   updateUser(data: UpdateUserInput!, id: Float!): User!
   deleteUser(id: Float!): Boolean!
   login(data: AuthInput!): AuthType!
+  createProfile(createProfileInput: CreateProfileInput!): Profile!
+  updateProfile(updateProfileInput: UpdateProfileInput!): Profile!
+  removeProfile(id: Int!): Profile!
 }
 
 input CreateUserInput {
@@ -43,4 +52,15 @@ input UpdateUserInput {
 input AuthInput {
   email: String!
   password: String!
+}
+
+input CreateProfileInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateProfileInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }

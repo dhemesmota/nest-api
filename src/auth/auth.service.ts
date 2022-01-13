@@ -27,6 +27,7 @@ export class AuthService {
     return {
       user,
       token,
+      refreshToken: '',
     };
   }
 

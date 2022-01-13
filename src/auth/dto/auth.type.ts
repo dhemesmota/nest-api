@@ -8,4 +8,7 @@ export class AuthType {
 
   @Field()
   token: string;
+
+  @Field()
+  refreshToken?: string;
 }
