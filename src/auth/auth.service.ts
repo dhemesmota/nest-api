@@ -1,17 +1,17 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compareSync } from 'bcrypt';
-import { User } from '../user/user.entity';
+// import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthInput } from './dto/auth.input';
 import { AuthType } from './dto/auth.type';
-import { JwtService } from '@nestjs/jwt';
+// import { JwtService } from '@nestjs/jwt';
 import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService,
+    // private jwtService: JwtService,
     private tokenService: TokenService,
   ) {}
 
