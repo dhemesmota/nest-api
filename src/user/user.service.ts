@@ -2,6 +2,7 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -44,6 +45,17 @@ export class UserService {
 
   async createUser(data: CreateUserInput): Promise<User> {
     const user = this.userRepository.create(data);
+
+    const existingUserEmail = await this.userRepository.findOne(undefined, {
+      where: { email: data.email },
+    });
+
+    if (existingUserEmail) {
+      throw new UnprocessableEntityException(
+        'O e-mail já está sendo utilizado.',
+      );
+    }
+
     const userSaved = await this.userRepository.save(user);
 
     if (!userSaved) {

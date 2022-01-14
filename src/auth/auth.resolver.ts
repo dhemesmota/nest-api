@@ -19,4 +19,13 @@ export class AuthResolver {
       refreshToken,
     };
   }
+
+  @Mutation(() => AuthType)
+  public async refresh(
+    @Args('refreshToken') refreshToken: string,
+  ): Promise<AuthType> {
+    const { user, token } = await this.authService.refreshToken(refreshToken);
+
+    return { user, token };
+  }
 }

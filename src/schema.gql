@@ -11,6 +11,7 @@ type User {
 type AuthType {
   user: User!
   token: String!
+  refreshToken: String
 }
 
 type Profile {
@@ -31,6 +32,7 @@ type Mutation {
   updateUser(data: UpdateUserInput!, id: Float!): User!
   deleteUser(id: Float!): Boolean!
   login(data: AuthInput!): AuthType!
+  refresh(refreshToken: String!): AuthType!
   createProfile(createProfileInput: CreateProfileInput!): Profile!
   updateProfile(updateProfileInput: UpdateProfileInput!): Profile!
   removeProfile(id: Int!): Profile!
