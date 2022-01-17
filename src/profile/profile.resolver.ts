@@ -1,35 +1,54 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
+import { GraphQLUpload, FileUpload } from 'graphql-upload';
 import { ProfileService } from './profile.service';
-import { Profile } from './entities/profile.entity';
-import { CreateProfileInput } from './dto/create-profile.input';
-import { UpdateProfileInput } from './dto/update-profile.input';
+// import { CreateProfileInput } from './dto/create-profile.input';
+// import { UpdateProfileInput } from './dto/update-profile.input';
+import { User } from '../user/user.entity';
+import { createWriteStream } from 'fs';
+import { CurrentUser } from '../auth/auth.user';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../auth/auth.guard';
 
-@Resolver(() => Profile)
+@Resolver(() => User)
 export class ProfileResolver {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Mutation(() => Profile)
-  createProfile(@Args('createProfileInput') createProfileInput: CreateProfileInput) {
-    return this.profileService.create(createProfileInput);
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Boolean)
+  async uploadFileProfile(
+    @CurrentUser() user: User,
+    @Args({ name: 'file', type: () => GraphQLUpload })
+    { createReadStream, filename }: FileUpload,
+  ): Promise<boolean> {
+    return new Promise(async (resolve, reject) =>
+      createReadStream()
+        .pipe(createWriteStream(`./uploads/${filename}`))
+        .on('finish', async () => {
+          resolve(true);
+        })
+        .on('error', () => reject(false)),
+    );
   }
 
-  @Query(() => [Profile], { name: 'profile' })
-  findAll() {
-    return this.profileService.findAll();
-  }
+  // @Mutation(() => User)
+  // createProfile(
+  //   @Args('createProfileInput') createProfileInput: CreateProfileInput,
+  // ) {
+  //   return this.profileService.create(createProfileInput);
+  // }
 
-  @Query(() => Profile, { name: 'profile' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.profileService.findOne(id);
-  }
+  // @Mutation(() => User)
+  // updateProfile(
+  //   @Args('updateProfileInput') updateProfileInput: UpdateProfileInput,
+  // ) {
+  //   return this.profileService.update(
+  //     updateProfileInput.id,
+  //     updateProfileInput,
+  //   );
+  // }
 
-  @Mutation(() => Profile)
-  updateProfile(@Args('updateProfileInput') updateProfileInput: UpdateProfileInput) {
-    return this.profileService.update(updateProfileInput.id, updateProfileInput);
-  }
-
-  @Mutation(() => Profile)
-  removeProfile(@Args('id', { type: () => Int }) id: number) {
-    return this.profileService.remove(id);
-  }
+  // @Mutation(() => User)
+  // removeProfile(@Args('id', { type: () => Int }) id: number) {
+  //   return this.profileService.remove(id);
+  // }
 }

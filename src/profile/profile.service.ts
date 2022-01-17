@@ -1,23 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateProfileInput } from './dto/create-profile.input';
-import { UpdateProfileInput } from './dto/update-profile.input';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../user/user.entity';
+import { Repository } from 'typeorm';
+import { UploadFileInput } from './dto/upload-file.input';
 
 @Injectable()
 export class ProfileService {
-  create(createProfileInput: CreateProfileInput) {
-    return 'This action adds a new profile';
-  }
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
-  findAll() {
-    return `This action returns all profile`;
-  }
+  async update(id: number, uploadFileInput: UploadFileInput): Promise<void> {
+    const user = await this.userRepository.findOne(id);
 
-  findOne(id: number) {
-    return `This action returns a #${id} profile`;
-  }
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado.');
+    }
 
-  update(id: number, updateProfileInput: UpdateProfileInput) {
-    return `This action updates a #${id} profile`;
+    await this.userRepository.update(user, { image: uploadFileInput.filename });
+
+    const userUpdated = this.userRepository.create({
+      ...user,
+      image: uploadFileInput.filename,
+    });
   }
 
   remove(id: number) {
